@@ -21,10 +21,55 @@
       "deliveryTime": "25–35 min",
       "priceRange": "₹200–₹500 for one",
       "img": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=1200&q=60"
+    },
+    {
+      "id": "res_003",
+      "name": "Burger King",
+      "location": "Yagnik Road, Rajkot",
+      "city": "Rajkot",
+      "cuisine": "Burgers · Fast Food · American",
+      "rating": 4.1,
+      "deliveryTime": "25–35 min",
+      "priceRange": "₹150–₹450 for one",
+      "img": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=1200&q=60"
+    },
+    {
+      "id": "res_004",
+      "name": "Wow! Momo",
+      "location": "Race Course Road, Rajkot",
+      "city": "Rajkot",
+      "cuisine": "Chinese · Momos · Asian",
+      "rating": 4.3,
+      "deliveryTime": "30–45 min",
+      "priceRange": "₹100–₹300 for one",
+      "img": "https://images.unsplash.com/photo-1563245372-f21724e3856d?w=1200&q=60"
+    },
+    {
+      "id": "res_005",
+      "name": "Behrouz Biryani",
+      "location": "Gondal Road, Rajkot",
+      "city": "Rajkot",
+      "cuisine": "Biryani · Mughlai · North Indian",
+      "rating": 4.4,
+      "deliveryTime": "40–55 min",
+      "priceRange": "₹250–₹600 for one",
+      "img": "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=1200&q=60"
+    },
+    {
+      "id": "res_006",
+      "name": "Cafe Coffee Day",
+      "location": "Kotecha Chowk, Rajkot",
+      "city": "Rajkot",
+      "cuisine": "Cafe · Coffee · Snacks",
+      "rating": 3.9,
+      "deliveryTime": "20–30 min",
+      "priceRange": "₹100–₹350 for one",
+      "img": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1200&q=60"
     }
   ],
 
   "menu_items": [
+
     { "id": "item_001", "restaurant_id": "res_001", "name": "Margherita Pizza",   "category": "Pizza",     "isVeg": true,  "rating": 4.5, "img": "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=300&q=70" },
     { "id": "item_002", "restaurant_id": "res_001", "name": "Paneer Tikka Pizza", "category": "Pizza",     "isVeg": true,  "rating": 4.6, "img": "https://images.unsplash.com/photo-1571997478779-2adcbbe9ab2f?w=300&q=70" },
     { "id": "item_003", "restaurant_id": "res_001", "name": "Chicken BBQ Pizza",  "category": "Pizza",     "isVeg": false, "rating": 4.7, "img": "https://images.unsplash.com/photo-1628840042765-356cda07504e?w=300&q=70" },
@@ -40,10 +85,45 @@
     { "id": "item_104", "restaurant_id": "res_002", "name": "Veg Burger",         "category": "Burgers",   "isVeg": true,  "rating": 4.1, "img": "https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=300&q=70" },
     { "id": "item_105", "restaurant_id": "res_002", "name": "Chicken Burger",     "category": "Burgers",   "isVeg": false, "rating": 4.4, "img": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=300&q=70" },
     { "id": "item_106", "restaurant_id": "res_002", "name": "Garlic Breadsticks", "category": "Sides",     "isVeg": true,  "rating": 4.3, "img": "https://images.unsplash.com/photo-1619531040576-f9416740661b?w=300&q=70" },
-    { "id": "item_107", "restaurant_id": "res_002", "name": "Pepsi",              "category": "Beverages", "isVeg": true,  "rating": 4.0, "img": "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=300&q=70" }
+    { "id": "item_107", "restaurant_id": "res_002", "name": "Pepsi",              "category": "Beverages", "isVeg": true,  "rating": 4.0, "img": "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=300&q=70" },
+
+    { "id": "item_201", "restaurant_id": "res_003", "name": "Whopper",                  "category": "Burgers",   "isVeg": false, "rating": 4.5, "img": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=300&q=70" },
+    { "id": "item_202", "restaurant_id": "res_003", "name": "Veg Whopper",              "category": "Burgers",   "isVeg": true,  "rating": 4.3, "img": "https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=300&q=70" },
+    { "id": "item_203", "restaurant_id": "res_003", "name": "Crispy Chicken Burger",    "category": "Burgers",   "isVeg": false, "rating": 4.4, "img": "https://images.unsplash.com/photo-1553979459-d2229ba7433b?w=300&q=70" },
+    { "id": "item_204", "restaurant_id": "res_003", "name": "Paneer King Burger",       "category": "Burgers",   "isVeg": true,  "rating": 4.2, "img": "https://images.unsplash.com/photo-1550547660-d9450f859349?w=300&q=70" },
+    { "id": "item_205", "restaurant_id": "res_003", "name": "French Fries (L)",         "category": "Sides",     "isVeg": true,  "rating": 4.4, "img": "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=300&q=70" },
+    { "id": "item_206", "restaurant_id": "res_003", "name": "Onion Rings",              "category": "Sides",     "isVeg": true,  "rating": 4.1, "img": "https://images.unsplash.com/photo-1639024471283-03518883512d?w=300&q=70" },
+    { "id": "item_207", "restaurant_id": "res_003", "name": "Chocolate Shake",          "category": "Beverages", "isVeg": true,  "rating": 4.3, "img": "https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=300&q=70" },
+    { "id": "item_208", "restaurant_id": "res_003", "name": "Coke",                     "category": "Beverages", "isVeg": true,  "rating": 4.0, "img": "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=300&q=70" },
+
+    { "id": "item_301", "restaurant_id": "res_004", "name": "Steamed Momos (Veg)",      "category": "Momos",     "isVeg": true,  "rating": 4.5, "img": "https://images.unsplash.com/photo-1563245372-f21724e3856d?w=300&q=70" },
+    { "id": "item_302", "restaurant_id": "res_004", "name": "Fried Momos (Veg)",        "category": "Momos",     "isVeg": true,  "rating": 4.4, "img": "https://images.unsplash.com/photo-1563245372-f21724e3856d?w=300&q=70" },
+    { "id": "item_303", "restaurant_id": "res_004", "name": "Chicken Momos",            "category": "Momos",     "isVeg": false, "rating": 4.6, "img": "https://images.unsplash.com/photo-1563245372-f21724e3856d?w=300&q=70" },
+    { "id": "item_304", "restaurant_id": "res_004", "name": "Paneer Chilli",            "category": "Starters",  "isVeg": true,  "rating": 4.3, "img": "https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=300&q=70" },
+    { "id": "item_305", "restaurant_id": "res_004", "name": "Veg Noodles",              "category": "Mains",     "isVeg": true,  "rating": 4.2, "img": "https://images.unsplash.com/photo-1585032226651-759b368d7246?w=300&q=70" },
+    { "id": "item_306", "restaurant_id": "res_004", "name": "Chicken Fried Rice",       "category": "Mains",     "isVeg": false, "rating": 4.4, "img": "https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=300&q=70" },
+    { "id": "item_307", "restaurant_id": "res_004", "name": "Masala Lemon Soda",        "category": "Beverages", "isVeg": true,  "rating": 4.1, "img": "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=300&q=70" },
+
+    { "id": "item_401", "restaurant_id": "res_005", "name": "Chicken Dum Biryani",      "category": "Biryani",   "isVeg": false, "rating": 4.6, "img": "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=300&q=70" },
+    { "id": "item_402", "restaurant_id": "res_005", "name": "Mutton Biryani",           "category": "Biryani",   "isVeg": false, "rating": 4.7, "img": "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=300&q=70" },
+    { "id": "item_403", "restaurant_id": "res_005", "name": "Veg Biryani",              "category": "Biryani",   "isVeg": true,  "rating": 4.3, "img": "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=300&q=70" },
+    { "id": "item_404", "restaurant_id": "res_005", "name": "Paneer Biryani",           "category": "Biryani",   "isVeg": true,  "rating": 4.4, "img": "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=300&q=70" },
+    { "id": "item_405", "restaurant_id": "res_005", "name": "Chicken Seekh Kebab",      "category": "Starters",  "isVeg": false, "rating": 4.5, "img": "https://images.unsplash.com/photo-1603360946369-dc9bb6258143?w=300&q=70" },
+    { "id": "item_406", "restaurant_id": "res_005", "name": "Raita",                    "category": "Sides",     "isVeg": true,  "rating": 4.0, "img": "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=300&q=70" },
+    { "id": "item_407", "restaurant_id": "res_005", "name": "Shahi Tukda",              "category": "Desserts",  "isVeg": true,  "rating": 4.4, "img": "https://images.unsplash.com/photo-1551024601-bec78aea704b?w=300&q=70" },
+
+    { "id": "item_501", "restaurant_id": "res_006", "name": "Cappuccino",               "category": "Coffee",    "isVeg": true,  "rating": 4.1, "img": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=300&q=70" },
+    { "id": "item_502", "restaurant_id": "res_006", "name": "Cold Coffee",              "category": "Coffee",    "isVeg": true,  "rating": 4.2, "img": "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=300&q=70" },
+    { "id": "item_503", "restaurant_id": "res_006", "name": "Cafe Latte",               "category": "Coffee",    "isVeg": true,  "rating": 4.0, "img": "https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?w=300&q=70" },
+    { "id": "item_504", "restaurant_id": "res_006", "name": "Veg Sandwich",             "category": "Snacks",    "isVeg": true,  "rating": 3.9, "img": "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=300&q=70" },
+    { "id": "item_505", "restaurant_id": "res_006", "name": "Chicken Sandwich",         "category": "Snacks",    "isVeg": false, "rating": 4.1, "img": "https://images.unsplash.com/photo-1553909489-cd47e0907980?w=300&q=70" },
+    { "id": "item_506", "restaurant_id": "res_006", "name": "Chocolate Pastry",         "category": "Desserts",  "isVeg": true,  "rating": 4.3, "img": "https://images.unsplash.com/photo-1551024601-bec78aea704b?w=300&q=70" },
+    { "id": "item_507", "restaurant_id": "res_006", "name": "Mango Smoothie",           "category": "Beverages", "isVeg": true,  "rating": 4.2, "img": "https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?w=300&q=70" }
+
   ],
 
   "prices": [
+
     { "menu_item_id": "item_001", "platform": "Zomato", "final_price": 229 },
     { "menu_item_id": "item_001", "platform": "Swiggy", "final_price": 199 },
     { "menu_item_id": "item_002", "platform": "Zomato", "final_price": 259 },
@@ -74,6 +154,69 @@
     { "menu_item_id": "item_106", "platform": "Zomato", "final_price": 119 },
     { "menu_item_id": "item_106", "platform": "Swiggy", "final_price": 109 },
     { "menu_item_id": "item_107", "platform": "Zomato", "final_price": 65  },
-    { "menu_item_id": "item_107", "platform": "Swiggy", "final_price": 60  }
+    { "menu_item_id": "item_107", "platform": "Swiggy", "final_price": 60  },
+
+    { "menu_item_id": "item_201", "platform": "Zomato", "final_price": 289 },
+    { "menu_item_id": "item_201", "platform": "Swiggy", "final_price": 259 },
+    { "menu_item_id": "item_202", "platform": "Zomato", "final_price": 249 },
+    { "menu_item_id": "item_202", "platform": "Swiggy", "final_price": 239 },
+    { "menu_item_id": "item_203", "platform": "Zomato", "final_price": 219 },
+    { "menu_item_id": "item_203", "platform": "Swiggy", "final_price": 199 },
+    { "menu_item_id": "item_204", "platform": "Zomato", "final_price": 199 },
+    { "menu_item_id": "item_204", "platform": "Swiggy", "final_price": 209 },
+    { "menu_item_id": "item_205", "platform": "Zomato", "final_price": 129 },
+    { "menu_item_id": "item_205", "platform": "Swiggy", "final_price": 109 },
+    { "menu_item_id": "item_206", "platform": "Zomato", "final_price": 119 },
+    { "menu_item_id": "item_206", "platform": "Swiggy", "final_price": 119 },
+    { "menu_item_id": "item_207", "platform": "Zomato", "final_price": 149 },
+    { "menu_item_id": "item_207", "platform": "Swiggy", "final_price": 139 },
+    { "menu_item_id": "item_208", "platform": "Zomato", "final_price": 60  },
+    { "menu_item_id": "item_208", "platform": "Swiggy", "final_price": 55  },
+
+    { "menu_item_id": "item_301", "platform": "Zomato", "final_price": 119 },
+    { "menu_item_id": "item_301", "platform": "Swiggy", "final_price": 109 },
+    { "menu_item_id": "item_302", "platform": "Zomato", "final_price": 139 },
+    { "menu_item_id": "item_302", "platform": "Swiggy", "final_price": 129 },
+    { "menu_item_id": "item_303", "platform": "Zomato", "final_price": 149 },
+    { "menu_item_id": "item_303", "platform": "Swiggy", "final_price": 129 },
+    { "menu_item_id": "item_304", "platform": "Zomato", "final_price": 179 },
+    { "menu_item_id": "item_304", "platform": "Swiggy", "final_price": 169 },
+    { "menu_item_id": "item_305", "platform": "Zomato", "final_price": 159 },
+    { "menu_item_id": "item_305", "platform": "Swiggy", "final_price": 149 },
+    { "menu_item_id": "item_306", "platform": "Zomato", "final_price": 199 },
+    { "menu_item_id": "item_306", "platform": "Swiggy", "final_price": 189 },
+    { "menu_item_id": "item_307", "platform": "Zomato", "final_price": 79  },
+    { "menu_item_id": "item_307", "platform": "Swiggy", "final_price": 69  },
+
+    { "menu_item_id": "item_401", "platform": "Zomato", "final_price": 349 },
+    { "menu_item_id": "item_401", "platform": "Swiggy", "final_price": 319 },
+    { "menu_item_id": "item_402", "platform": "Zomato", "final_price": 449 },
+    { "menu_item_id": "item_402", "platform": "Swiggy", "final_price": 399 },
+    { "menu_item_id": "item_403", "platform": "Zomato", "final_price": 279 },
+    { "menu_item_id": "item_403", "platform": "Swiggy", "final_price": 259 },
+    { "menu_item_id": "item_404", "platform": "Zomato", "final_price": 299 },
+    { "menu_item_id": "item_404", "platform": "Swiggy", "final_price": 289 },
+    { "menu_item_id": "item_405", "platform": "Zomato", "final_price": 269 },
+    { "menu_item_id": "item_405", "platform": "Swiggy", "final_price": 249 },
+    { "menu_item_id": "item_406", "platform": "Zomato", "final_price": 69  },
+    { "menu_item_id": "item_406", "platform": "Swiggy", "final_price": 59  },
+    { "menu_item_id": "item_407", "platform": "Zomato", "final_price": 149 },
+    { "menu_item_id": "item_407", "platform": "Swiggy", "final_price": 159 },
+
+    { "menu_item_id": "item_501", "platform": "Zomato", "final_price": 179 },
+    { "menu_item_id": "item_501", "platform": "Swiggy", "final_price": 169 },
+    { "menu_item_id": "item_502", "platform": "Zomato", "final_price": 199 },
+    { "menu_item_id": "item_502", "platform": "Swiggy", "final_price": 179 },
+    { "menu_item_id": "item_503", "platform": "Zomato", "final_price": 169 },
+    { "menu_item_id": "item_503", "platform": "Swiggy", "final_price": 159 },
+    { "menu_item_id": "item_504", "platform": "Zomato", "final_price": 149 },
+    { "menu_item_id": "item_504", "platform": "Swiggy", "final_price": 139 },
+    { "menu_item_id": "item_505", "platform": "Zomato", "final_price": 179 },
+    { "menu_item_id": "item_505", "platform": "Swiggy", "final_price": 169 },
+    { "menu_item_id": "item_506", "platform": "Zomato", "final_price": 129 },
+    { "menu_item_id": "item_506", "platform": "Swiggy", "final_price": 119 },
+    { "menu_item_id": "item_507", "platform": "Zomato", "final_price": 159 },
+    { "menu_item_id": "item_507", "platform": "Swiggy", "final_price": 149 }
+
   ]
 }
