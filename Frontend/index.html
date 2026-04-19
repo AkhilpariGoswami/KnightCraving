@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KnightCraving – Compare Food Prices</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --orange: #f97316;
+    --orange-dark: #ea580c;
+    --orange-light: #fff7ed;
+    --bg: #0f0d0b;
+    --surface: #1a1713;
+    --surface2: #231f1a;
+    --border: rgba(255,255,255,0.08);
+    --text: #f5f0ea;
+    --muted: #9e9689;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(ellipse 70% 50% at 50% 0%, rgba(249,115,22,0.12) 0%, transparent 60%),
+      url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f97316' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .card {
+    position: relative;
+    z-index: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2.5rem 2rem;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.5), 0 0 0 1px rgba(249,115,22,0.05);
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1.75rem;
+    text-decoration: none;
+  }
+
+  .brand-icon {
+    width: 40px; height: 40px;
+    background: var(--orange);
+    border-radius: 11px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .brand-icon svg { width: 20px; height: 20px; }
+
+  .brand-text h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--text);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .brand-text p {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .fields { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+
+  .field-group { display: flex; flex-direction: column; gap: 4px; }
+
+  .input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .input-wrap > svg {
+    position: absolute;
+    left: 12px;
+    width: 15px; height: 15px;
+    pointer-events: none;
+    z-index: 1;
+    stroke: var(--muted);
+  }
+
+  input {
+    width: 100%;
+    padding: 11px 14px 11px 36px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  input::placeholder { color: var(--muted); }
+  input:focus {
+    border-color: rgba(249,115,22,0.5);
+    box-shadow: 0 0 0 3px rgba(249,115,22,0.1);
+  }
+  input.error { border-color: rgba(239,68,68,0.6); }
+
+  .error-msg {
+    font-size: 0.75rem;
+    color: #f87171;
+    padding-left: 2px;
+    display: none;
+  }
+  .error-msg.visible { display: block; }
+
+  /* AUTOCOMPLETE */
+  .autocomplete-wrap { position: relative; width: 100%; }
+
+  .suggestions {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0; right: 0;
+    background: var(--surface);
+    border: 1px solid rgba(249,115,22,0.2);
+    border-radius: 12px;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+    z-index: 200;
+    overflow: hidden;
+    display: none;
+  }
+  .suggestions.open { display: block; }
+
+  .suggestion-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    cursor: pointer;
+    transition: background 0.1s;
+  }
+  .suggestion-item:hover,
+  .suggestion-item.highlighted { background: rgba(249,115,22,0.08); }
+
+  .sug-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: rgba(249,115,22,0.1);
+    border: 1px solid rgba(249,115,22,0.15);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .sug-icon svg { width: 14px; height: 14px; stroke: var(--orange); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  .sug-meta { display: flex; flex-direction: column; }
+  .sug-name { font-size: 0.88rem; font-weight: 600; color: var(--text); }
+  .sug-loc  { font-size: 0.73rem; color: var(--muted); }
+
+  .no-results { padding: 12px 14px; font-size: 0.82rem; color: var(--muted); }
+
+  /* BUTTON */
+  .search-btn {
+    width: 100%;
+    padding: 13px;
+    border-radius: 10px;
+    border: none;
+    background: var(--orange);
+    color: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .search-btn:hover:not(:disabled) { background: var(--orange-dark); }
+  .search-btn:active:not(:disabled) { transform: scale(0.98); }
+  .search-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .spinner {
+    width: 16px; height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    display: none;
+  }
+  .spinner.active { display: block; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .helper {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: 14px;
+    text-align: center;
+  }
+  .helper span {
+    color: var(--orange);
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .helper span:hover { color: var(--orange-dark); }
+
+  /* Loading overlay */
+  .loading-state {
+    display: none;
+    text-align: center;
+    padding: 20px 0 4px;
+    color: var(--muted);
+    font-size: 0.82rem;
+  }
+
+  /* Divider */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .divider span { font-size: 0.72rem; color: var(--muted); white-space: nowrap; }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="brand">
+    <div class="brand-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 2h18l-2 7H5L3 2z"/>
+        <path d="M5 9l1 11h12l1-11"/>
+        <path d="M9 9v11"/><path d="M15 9v11"/>
+      </svg>
+    </div>
+    <div class="brand-text">
+      <h1>KnightCraving</h1>
+      <p>Compare food prices. Choose the best deal.</p>
+    </div>
+  </div>
+
+  <div class="divider"><span>Find your restaurant</span></div>
+
+  <div class="fields" id="fields">
+    <!-- Location -->
+    <div class="field-group">
+      <div class="input-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/>
+          <circle cx="12" cy="10" r="3"/>
+        </svg>
+        <input id="location" type="text" placeholder="City or area (e.g. Rajkot)"
+          oninput="clearErr('location')" onkeydown="handleKey(event)" autocomplete="off"/>
+      </div>
+      <div class="error-msg" id="location-error"></div>
+    </div>
+
+    <!-- Restaurant with autocomplete -->
+    <div class="field-group">
+      <div class="input-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 2h18l-2 7H5L3 2z"/>
+          <path d="M5 9l1 11h12l1-11"/>
+          <path d="M9 9v11"/><path d="M15 9v11"/>
+        </svg>
+        <div class="autocomplete-wrap">
+          <input id="restaurant" type="text" placeholder="Restaurant name"
+            oninput="onRestInput()" onkeydown="handleKey(event)"
+            onblur="onBlur()" autocomplete="off"/>
+          <div class="suggestions" id="suggestions"></div>
+        </div>
+      </div>
+      <div class="error-msg" id="restaurant-error"></div>
+    </div>
+  </div>
+
+  <div class="loading-state" id="loadingState">Loading restaurant data…</div>
+
+  <button class="search-btn" id="searchBtn" onclick="handleSearch()" disabled>
+    <div class="spinner" id="spinner"></div>
+    <span id="btnText">Compare Prices</span>
+  </button>
+
+  <p class="helper" id="helperText"></p>
+</div>
+
+<script>
+  // ── STATE ──────────────────────────────────────────────
+  let restaurants = [];
+  let highlightIdx = -1;
+  let isSelectingItem = false;
+  let selectedRestaurant = null;
+  const CONFIG = {
+  dataUrl: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? '../backend/data.json'      // local dev
+    : '/data.json'                 // production (data.json in same folder as HTML)
+  };
+
+  // ── BOOTSTRAP: load data.json ──────────────────────────
+  async function loadData() {
+    document.getElementById('loadingState').style.display = 'block';
+    try {
+      const res = await fetch(CONFIG.dataUrl);
+      if (!res.ok) throw new Error('fetch failed');
+      const data = await res.json();
+      restaurants = data.restaurants || [];
+      onDataLoaded();
+    } catch (e) {
+      document.getElementById('loadingState').textContent = 'Failed to load data. Please refresh.';
+    }
+  }
+
+  function onDataLoaded() {
+    document.getElementById('loadingState').style.display = 'none';
+    document.getElementById('searchBtn').disabled = false;
+
+    // Build helper text from loaded restaurants
+    const names = restaurants.map(r => `${r.name}`).join(' · ');
+    document.getElementById('helperText').innerHTML =
+      `Available: ${restaurants.map(r => `<span onclick="fillDemo('${r.name}','${r.city}')">${r.name}</span>`).join(', ')}`;
+  }
+
+  // ── AUTOCOMPLETE ───────────────────────────────────────
+  function onRestInput() {
+    clearErr('restaurant');
+    selectedRestaurant = null;
+    const q = document.getElementById('restaurant').value.trim().toLowerCase();
+    const box = document.getElementById('suggestions');
+    highlightIdx = -1;
+
+    if (!q) { box.classList.remove('open'); return; }
+
+    const matches = restaurants.filter(r =>
+      r.name.toLowerCase().includes(q) || r.city.toLowerCase().includes(q)
+    );
+
+    if (matches.length === 0) {
+      box.innerHTML = `<div class="no-results">No restaurants found</div>`;
+    } else {
+      box.innerHTML = matches.map((r, i) => `
+        <div class="suggestion-item" data-idx="${i}" data-name="${r.name}" data-city="${r.city}" data-id="${r.id}">
+          <div class="sug-icon">
+            <svg viewBox="0 0 24 24"><path d="M3 2h18l-2 7H5L3 2z"/><path d="M5 9l1 11h12l1-11"/><path d="M9 9v11"/><path d="M15 9v11"/></svg>
+          </div>
+          <div class="sug-meta">
+            <span class="sug-name">${r.name}</span>
+            <span class="sug-loc">${r.location || r.city}</span>
+          </div>
+        </div>
+      `).join('');
+
+      box.querySelectorAll('.suggestion-item').forEach((el, i) => {
+        el.addEventListener('mousedown', e => {
+          e.preventDefault();
+          isSelectingItem = true;
+          selectSuggestion(el.dataset.name, el.dataset.city, el.dataset.id);
+        });
+        el.addEventListener('mouseover', () => setHighlight(i));
+      });
+    }
+    box.classList.add('open');
+  }
+
+  function onBlur() {
+    if (isSelectingItem) { isSelectingItem = false; return; }
+    closeSuggestions();
+  }
+
+  function selectSuggestion(name, city, id) {
+    document.getElementById('restaurant').value = name;
+    if (!document.getElementById('location').value.trim()) {
+      document.getElementById('location').value = city;
+    }
+    selectedRestaurant = restaurants.find(r => r.id === id);
+    clearErr('restaurant');
+    closeSuggestions();
+    document.getElementById('restaurant').focus();
+  }
+
+  function setHighlight(idx) {
+    highlightIdx = idx;
+    document.querySelectorAll('.suggestion-item').forEach((el, i) =>
+      el.classList.toggle('highlighted', i === idx)
+    );
+  }
+
+  function closeSuggestions() {
+    document.getElementById('suggestions').classList.remove('open');
+    highlightIdx = -1;
+  }
+
+  // ── KEYBOARD NAV ───────────────────────────────────────
+  function handleKey(e) {
+    const items = document.querySelectorAll('.suggestion-item');
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      highlightIdx = Math.min(highlightIdx + 1, items.length - 1);
+      setHighlight(highlightIdx);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      highlightIdx = Math.max(highlightIdx - 1, 0);
+      setHighlight(highlightIdx);
+    } else if (e.key === 'Enter') {
+      if (highlightIdx >= 0 && items[highlightIdx]) {
+        const el = items[highlightIdx];
+        selectSuggestion(el.dataset.name, el.dataset.city, el.dataset.id);
+      } else {
+        handleSearch();
+      }
+    } else if (e.key === 'Escape') {
+      closeSuggestions();
+    }
+  }
+
+  // ── VALIDATION ────────────────────────────────────────
+  function validate() {
+    const loc  = document.getElementById('location').value.trim();
+    const rest = document.getElementById('restaurant').value.trim();
+    let ok = true;
+    if (!loc)  { showErr('location', 'Please enter a city or area'); ok = false; }
+    if (!rest) { showErr('restaurant', 'Please enter a restaurant name'); ok = false; }
+    return ok;
+  }
+
+  function showErr(field, msg) {
+    document.getElementById(field).classList.add('error');
+    const el = document.getElementById(field + '-error');
+    el.textContent = msg;
+    el.classList.add('visible');
+  }
+
+  function clearErr(field) {
+    document.getElementById(field).classList.remove('error');
+    document.getElementById(field + '-error').classList.remove('visible');
+  }
+
+  // ── SEARCH ────────────────────────────────────────────
+  function handleSearch() {
+    if (!validate()) return;
+
+    const restInput = document.getElementById('restaurant').value.trim();
+
+    // Try exact match first (from autocomplete), fallback to fuzzy
+    const match = selectedRestaurant ||
+      restaurants.find(r => r.name.toLowerCase() === restInput.toLowerCase()) ||
+      restaurants.find(r => r.name.toLowerCase().includes(restInput.toLowerCase()));
+
+    if (!match) {
+      showErr('restaurant', `"${restInput}" not found in our database`);
+      return;
+    }
+
+    const btn = document.getElementById('searchBtn');
+    btn.disabled = true;
+    document.getElementById('spinner').classList.add('active');
+    document.getElementById('btnText').textContent = 'Loading…';
+
+    setTimeout(() => {
+      const params = new URLSearchParams({ id: match.id });
+      window.location.href = `restaurant.html?${params.toString()}`;
+    }, 400);
+  }
+
+  // ── DEMO FILL ─────────────────────────────────────────
+  function fillDemo(name, city) {
+    document.getElementById('location').value = city;
+    document.getElementById('restaurant').value = name;
+    selectedRestaurant = restaurants.find(r => r.name === name);
+    clearErr('location');
+    clearErr('restaurant');
+  }
+
+  // ── INIT ──────────────────────────────────────────────
+  loadData();
+</script>
+</body>
+</html>

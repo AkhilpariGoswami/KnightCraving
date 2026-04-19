@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KnightCraving</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --orange: #f97316;
+    --orange-dark: #ea580c;
+    --zomato: #e23744;
+    --swiggy: #fc8019;
+    --bg: #0f0d0b;
+    --surface: #1a1713;
+    --surface2: #231f1a;
+    --border: rgba(255,255,255,0.08);
+    --text: #f5f0ea;
+    --muted: #9e9689;
+    --card-bg: #1e1b17;
+    --best: #22c55e;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(249,115,22,0.12) 0%, transparent 60%),
+      url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f97316' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(15,13,11,0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 20px;
+    height: 60px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+
+  .brand {
+    display: flex; align-items: center; gap: 9px;
+    text-decoration: none;
+  }
+  .brand-icon {
+    width: 34px; height: 34px;
+    background: var(--orange);
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .brand-icon svg { width: 17px; height: 17px; }
+  .brand-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+
+  .back-btn {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 6px 12px;
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    text-decoration: none;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .back-btn:hover { border-color: rgba(249,115,22,0.3); color: var(--text); }
+  .back-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    overflow: hidden;
+    padding: 28px 20px 22px;
+    border-bottom: 1px solid var(--border);
+    z-index: 1;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.35) saturate(0.7);
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to right, rgba(15,13,11,0.92) 35%, rgba(15,13,11,0.4) 100%);
+  }
+
+  .hero-content {
+    position: relative; z-index: 1;
+    max-width: 500px;
+  }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(249,115,22,0.15);
+    border: 1px solid rgba(249,115,22,0.3);
+    color: var(--orange);
+    font-size: 0.72rem; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 3px 9px; border-radius: 100px;
+    margin-bottom: 10px;
+  }
+  .hero-badge::before {
+    content: ''; width: 6px; height: 6px;
+    border-radius: 50%; background: var(--orange);
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    line-height: 1.15;
+    margin-bottom: 6px;
+  }
+
+  .hero-sub {
+    font-size: 0.82rem; color: var(--muted);
+    margin-bottom: 14px;
+  }
+
+  .hero-stats {
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+
+  .stat-pill {
+    display: flex; align-items: center; gap: 5px;
+    font-size: 0.78rem; color: var(--text);
+    background: rgba(255,255,255,0.07);
+    border: 1px solid var(--border);
+    padding: 4px 11px; border-radius: 100px;
+  }
+  .stat-pill svg { width: 12px; height: 12px; stroke: var(--orange); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .stat-pill .star { stroke: #fbbf24; fill: #fbbf24; }
+
+  /* ── CONTROLS ── */
+  .controls {
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex; gap: 8px;
+    position: relative; z-index: 1;
+  }
+
+  .search-wrap {
+    flex: 1; position: relative;
+  }
+  .search-wrap svg {
+    position: absolute; left: 11px; top: 50%; transform: translateY(-50%);
+    width: 14px; height: 14px; stroke: var(--muted); fill: none;
+    stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+    pointer-events: none;
+  }
+  #searchInput {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 9px 12px 9px 32px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem; color: var(--text);
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  #searchInput::placeholder { color: var(--muted); }
+  #searchInput:focus {
+    border-color: rgba(249,115,22,0.5);
+    box-shadow: 0 0 0 3px rgba(249,115,22,0.1);
+  }
+
+  .ctrl-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 9px 12px;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 5px;
+    font-size: 0.78rem; color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    transition: border-color 0.15s, color 0.15s;
+    white-space: nowrap;
+  }
+  .ctrl-btn:hover { border-color: rgba(249,115,22,0.4); color: var(--text); }
+  .ctrl-btn.active { border-color: rgba(249,115,22,0.5); color: var(--orange); background: rgba(249,115,22,0.08); }
+  .ctrl-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; }
+
+  /* ── TABS ── */
+  .tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    position: relative; z-index: 1;
+    overflow-x: auto;
+    padding: 0 20px;
+  }
+
+  .tab {
+    flex: 1;
+    padding: 12px 16px;
+    background: transparent; border: none;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem; font-weight: 600;
+    color: var(--muted);
+    display: flex; align-items: center; justify-content: center; gap: 7px;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+    white-space: nowrap;
+  }
+  .tab.active-both   { color: var(--orange);  border-bottom-color: var(--orange); }
+  .tab.active-zomato { color: var(--zomato);  border-bottom-color: var(--zomato); }
+  .tab.active-swiggy { color: var(--swiggy);  border-bottom-color: var(--swiggy); }
+
+  .dot { width: 7px; height: 7px; border-radius: 50%; }
+  .z-dot { background: var(--zomato); }
+  .s-dot { background: var(--swiggy); }
+  .b-dot { background: var(--orange); }
+
+  /* ── FILTER PILLS ── */
+  .filter-bar {
+    padding: 10px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 6px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    position: relative; z-index: 1;
+    scrollbar-width: none;
+  }
+  .filter-bar::-webkit-scrollbar { display: none; }
+
+  .filter-label {
+    font-size: 0.7rem; font-weight: 600;
+    color: var(--muted); text-transform: uppercase;
+    letter-spacing: 0.08em; white-space: nowrap;
+    margin-right: 2px;
+  }
+
+  .pill {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.75rem; font-weight: 500;
+    padding: 3px 10px; border-radius: 100px;
+    white-space: nowrap; cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+  }
+  .pill:hover { border-color: rgba(249,115,22,0.3); color: var(--text); }
+  .pill.active {
+    background: rgba(249,115,22,0.12);
+    border-color: rgba(249,115,22,0.4);
+    color: var(--orange);
+  }
+  .pill.veg-active {
+    background: rgba(34,197,94,0.1);
+    border-color: rgba(34,197,94,0.3);
+    color: var(--best);
+  }
+
+  /* ── MAIN ── */
+  .main {
+    padding: 18px 20px 40px;
+    position: relative; z-index: 1;
+  }
+
+  .section-label {
+    font-size: 0.7rem; font-weight: 600;
+    color: var(--muted); text-transform: uppercase;
+    letter-spacing: 0.1em; margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--border);
+  }
+
+  /* Side-by-side comparison grid */
+  .comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  @media (max-width: 560px) {
+    .comparison-grid { grid-template-columns: 1fr; }
+  }
+
+  .col-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 12px; border-radius: 9px; margin-bottom: 8px; border: 1px solid;
+  }
+  .col-header.z-h { background: rgba(226,55,68,0.1); border-color: rgba(226,55,68,0.22); }
+  .col-header.s-h { background: rgba(252,128,25,0.1); border-color: rgba(252,128,25,0.22); }
+  .col-header-name { font-weight: 700; font-size: 0.85rem; letter-spacing: 0.04em; }
+  .z-h .col-header-name { color: var(--zomato); }
+  .s-h .col-header-name { color: var(--swiggy); }
+  .col-count { font-size: 0.7rem; color: var(--muted); }
+
+  /* ── MENU CARD ── */
+  .menu-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px;
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 7px;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s, transform 0.1s;
+    position: relative; overflow: hidden;
+    animation: fadeUp 0.25s ease both;
+  }
+  .menu-card:hover {
+    border-color: rgba(249,115,22,0.22);
+    background: #221e18;
+    transform: translateY(-1px);
+  }
+  .menu-card.best-deal { border-color: rgba(34,197,94,0.22); }
+  .menu-card.best-deal::after {
+    content: 'Best';
+    position: absolute; top: 7px; right: 7px;
+    background: rgba(34,197,94,0.12);
+    color: var(--best);
+    font-size: 0.62rem; font-weight: 700;
+    letter-spacing: 0.05em; text-transform: uppercase;
+    padding: 2px 6px; border-radius: 100px;
+    border: 1px solid rgba(34,197,94,0.22);
+  }
+
+  .item-img {
+    width: 58px; height: 58px;
+    border-radius: 8px; object-fit: cover;
+    flex-shrink: 0; background: var(--surface2);
+  }
+
+  .item-info { flex: 1; min-width: 0; }
+
+  .veg-dot {
+    display: inline-block;
+    width: 8px; height: 8px; border-radius: 1px;
+    border: 1.5px solid;
+    margin-bottom: 2px;
+    position: relative;
+  }
+  .veg-dot::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 4px; height: 4px;
+    border-radius: 50%;
+  }
+  .veg-dot.veg { border-color: var(--best); }
+  .veg-dot.veg::after { background: var(--best); }
+  .veg-dot.nonveg { border-color: #ef4444; }
+  .veg-dot.nonveg::after { background: #ef4444; }
+
+  .item-name {
+    font-size: 0.88rem; font-weight: 600; color: var(--text);
+    text-overflow: ellipsis; overflow: hidden; white-space: nowrap;
+    margin-bottom: 3px;
+  }
+
+  .item-meta {
+    display: flex; align-items: center; gap: 6px;
+  }
+  .item-cat {
+    font-size: 0.68rem; color: var(--muted);
+    background: var(--surface2);
+    padding: 1px 6px; border-radius: 100px;
+  }
+  .item-rating {
+    display: flex; align-items: center; gap: 2px;
+    font-size: 0.7rem; color: #fbbf24; font-weight: 500;
+  }
+  .item-rating svg { width: 10px; height: 10px; fill: #fbbf24; }
+
+  .item-price-area {
+    flex-shrink: 0; text-align: right;
+    display: flex; flex-direction: column; align-items: flex-end; gap: 5px;
+  }
+  .item-price { font-size: 0.92rem; font-weight: 700; color: var(--text); }
+
+  .add-btn {
+    width: 24px; height: 24px;
+    border-radius: 6px;
+    border: 1px solid rgba(249,115,22,0.4);
+    background: rgba(249,115,22,0.1);
+    color: var(--orange);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 1rem; line-height: 1;
+    transition: background 0.15s;
+  }
+  .add-btn:hover { background: rgba(249,115,22,0.25); }
+
+  /* Single-column list mode */
+  .list-items .menu-card { max-width: 100%; }
+
+  /* ── SAVINGS BANNER ── */
+  .savings-banner {
+    margin-top: 20px;
+    background: linear-gradient(135deg, rgba(34,197,94,0.08), rgba(34,197,94,0.04));
+    border: 1px solid rgba(34,197,94,0.18);
+    border-radius: 12px;
+    padding: 14px 18px;
+    display: flex; align-items: center;
+    justify-content: space-between; gap: 12px;
+    flex-wrap: wrap;
+  }
+  .savings-text h3 { font-size: 0.92rem; font-weight: 700; color: var(--best); margin-bottom: 2px; }
+  .savings-text p  { font-size: 0.75rem; color: var(--muted); }
+  .savings-amount  { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--best); }
+
+  /* ── EMPTY / ERROR / LOADING ── */
+  .empty-state {
+    text-align: center; padding: 40px 20px;
+    color: var(--muted); font-size: 0.85rem;
+  }
+
+  .skeleton-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px;
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 7px;
+  }
+  .skel { background: var(--surface2); border-radius: 6px; animation: pulse 1.4s ease infinite; }
+  .skel-img  { width: 58px; height: 58px; border-radius: 8px; flex-shrink: 0; }
+  .skel-line { height: 10px; margin-bottom: 6px; }
+  .skel-info { flex: 1; }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a class="brand" href="index.html">
+    <div class="brand-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 2h18l-2 7H5L3 2z"/>
+        <path d="M5 9l1 11h12l1-11"/>
+        <path d="M9 9v11"/><path d="M15 9v11"/>
+      </svg>
+    </div>
+    <span class="brand-name">KnightCraving</span>
+  </a>
+  <a class="back-btn" href="index.html">
+    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    Back
+  </a>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Live Comparison</div>
+    <h1 class="hero-title" id="heroTitle">Loading…</h1>
+    <p class="hero-sub" id="heroSub"></p>
+    <div class="hero-stats" id="heroStats"></div>
+  </div>
+</section>
+
+<!-- CONTROLS -->
+<div class="controls">
+  <div class="search-wrap">
+    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" id="searchInput" placeholder="Search items…" oninput="onSearch()">
+  </div>
+  <button class="ctrl-btn" id="sortBtn" onclick="toggleSort()">
+    <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="6" y1="12" x2="18" y2="12"/><line x1="9" y1="18" x2="15" y2="18"/></svg>
+    Savings
+  </button>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab active-both" id="tab-both"   onclick="setTab('both')">
+    <span class="dot b-dot"></span> Both
+  </button>
+  <button class="tab" id="tab-zomato" onclick="setTab('zomato')">
+    <span class="dot z-dot"></span> Zomato
+  </button>
+  <button class="tab" id="tab-swiggy" onclick="setTab('swiggy')">
+    <span class="dot s-dot"></span> Swiggy
+  </button>
+</div>
+
+<!-- FILTER PILLS -->
+<div class="filter-bar" id="filterBar">
+  <span class="filter-label">Filter:</span>
+  <!-- populated by JS -->
+</div>
+
+<!-- MAIN -->
+<main class="main" id="main">
+  <!-- skeleton -->
+  ${[...Array(4)].map(() => `
+    <div class="skeleton-card">
+      <div class="skel skel-img"></div>
+      <div class="skel-info">
+        <div class="skel skel-line" style="width:60%"></div>
+        <div class="skel skel-line" style="width:40%"></div>
+      </div>
+    </div>
+  `).join('')}
+</main>
+
+<script>
+// ── STATE ──────────────────────────────────────────────────────
+let allData      = null;
+let restaurant   = null;
+let menuItems    = [];   // enriched: { ...item, zomato, swiggy }
+let currentTab   = 'both';
+let currentQuery = '';
+let sortSavings  = false;
+let activeCategory = 'All';
+let vegFilter    = false;
+const CONFIG = {
+  dataUrl: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? '../backend/data.json'      // local dev
+    : '/data.json'                 // production (data.json in same folder as HTML)
+};
+
+// ── BOOTSTRAP ─────────────────────────────────────────────────
+async function init() {
+  const params = new URLSearchParams(window.location.search);
+  const resId  = params.get('id');
+
+  if (!resId) {
+    showFatalError('No restaurant specified. <a href="index.html">Go back</a>');
+    return;
+  }
+
+  try {
+    const res = await fetch(CONFIG.dataUrl);
+    if (!res.ok) throw new Error('fetch failed');
+    allData = await res.json();
+  } catch (e) {
+    showFatalError('Could not load data. Please refresh the page.');
+    return;
+  }
+
+  restaurant = allData.restaurants.find(r => r.id === resId);
+  if (!restaurant) {
+    showFatalError(`Restaurant not found. <a href="index.html">Go back</a>`);
+    return;
+  }
+
+  // Build enriched menu items: join prices into each item
+  const rawItems = allData.menu_items.filter(i => i.restaurant_id === resId);
+  menuItems = rawItems.map(item => {
+    const prices = allData.prices.filter(p => p.menu_item_id === item.id);
+    const zRow   = prices.find(p => p.platform === 'Zomato');
+    const sRow   = prices.find(p => p.platform === 'Swiggy');
+    return {
+      ...item,
+      zomato: zRow ? zRow.final_price : null,
+      swiggy: sRow ? sRow.final_price : null,
+    };
+  });
+
+  renderHero();
+  renderFilterPills();
+  render();
+}
+
+// ── HERO ──────────────────────────────────────────────────────
+function renderHero() {
+  document.title = `KnightCraving – ${restaurant.name}`;
+  document.getElementById('heroBg').style.backgroundImage = `url('${restaurant.img}')`;
+  document.getElementById('heroTitle').textContent = restaurant.name;
+  document.getElementById('heroSub').textContent =
+    `${restaurant.cuisine}  ·  ${restaurant.priceRange}`;
+
+  document.getElementById('heroStats').innerHTML = `
+    <span class="stat-pill">
+      <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" class="star" stroke-width="2"/></svg>
+      ${restaurant.rating}
+    </span>
+    <span class="stat-pill">
+      <svg viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      ${restaurant.deliveryTime}
+    </span>
+    <span class="stat-pill">
+      <svg viewBox="0 0 24 24" stroke-width="2"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      ${restaurant.location}
+    </span>
+  `;
+}
+
+// ── FILTER PILLS ──────────────────────────────────────────────
+function renderFilterPills() {
+  const cats = ['All', ...new Set(menuItems.map(i => i.category))];
+  const bar = document.getElementById('filterBar');
+  bar.innerHTML = `<span class="filter-label">Filter:</span>`;
+
+  cats.forEach(cat => {
+    const pill = document.createElement('button');
+    pill.className = 'pill' + (cat === activeCategory ? ' active' : '');
+    pill.textContent = cat;
+    pill.onclick = () => { activeCategory = cat; renderFilterPills(); render(); };
+    bar.appendChild(pill);
+  });
+
+  // Veg toggle
+  const vegPill = document.createElement('button');
+  vegPill.className = 'pill' + (vegFilter ? ' veg-active' : '');
+  vegPill.innerHTML = `🟢 Veg Only`;
+  vegPill.onclick = () => { vegFilter = !vegFilter; renderFilterPills(); render(); };
+  bar.appendChild(vegPill);
+}
+
+// ── FILTERING / SORTING ───────────────────────────────────────
+function getFiltered() {
+  let items = menuItems;
+  if (currentQuery) {
+    const q = currentQuery.toLowerCase();
+    items = items.filter(i => i.name.toLowerCase().includes(q) || i.category.toLowerCase().includes(q));
+  }
+  if (activeCategory !== 'All') {
+    items = items.filter(i => i.category === activeCategory);
+  }
+  if (vegFilter) {
+    items = items.filter(i => i.isVeg);
+  }
+  if (sortSavings) {
+    items = [...items].sort((a, b) => savings(b) - savings(a));
+  }
+  return items;
+}
+
+function savings(item) {
+  if (item.zomato && item.swiggy) return Math.abs(item.zomato - item.swiggy);
+  return 0;
+}
+
+function bestPlatform(item) {
+  if (!item.zomato) return 'swiggy';
+  if (!item.swiggy) return 'zomato';
+  return item.zomato <= item.swiggy ? 'zomato' : 'swiggy';
+}
+
+function fmt(n) { return '₹' + n.toFixed(0); }
+
+// ── CARD HTML ─────────────────────────────────────────────────
+function cardHtml(item, platform) {
+  const price = item[platform];
+  if (price === null || price === undefined) return '';
+  const isBest = bestPlatform(item) === platform && item.zomato && item.swiggy;
+  const vegClass = item.isVeg ? 'veg' : 'nonveg';
+
+  return `
+    <div class="menu-card ${isBest ? 'best-deal' : ''}">
+      <img class="item-img"
+        src="${item.img}"
+        alt="${item.name}"
+        loading="lazy"
+        onerror="this.src='https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=300&q=70'">
+      <div class="item-info">
+        <span class="veg-dot ${vegClass}"></span>
+        <div class="item-name">${item.name}</div>
+        <div class="item-meta">
+          <span class="item-cat">${item.category}</span>
+          <span class="item-rating">
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            ${item.rating}
+          </span>
+        </div>
+      </div>
+      <div class="item-price-area">
+        <span class="item-price">${fmt(price)}</span>
+        <button class="add-btn">+</button>
+      </div>
+    </div>`;
+}
+
+// ── RENDER ────────────────────────────────────────────────────
+function render() {
+  const items = getFiltered();
+  const main  = document.getElementById('main');
+
+  if (items.length === 0) {
+    main.innerHTML = `<div class="empty-state">No items match your filters.</div>`;
+    return;
+  }
+
+  if (currentTab === 'both') {
+    const zItems = items.filter(i => i.zomato !== null);
+    const sItems = items.filter(i => i.swiggy !== null);
+
+    const maxSave  = items.reduce((m, i) => Math.max(m, savings(i)), 0);
+    const bestItem = items.find(i => savings(i) === maxSave && maxSave > 0);
+
+    main.innerHTML = `
+      <div class="section-label">Menu Comparison</div>
+      <div class="comparison-grid">
+        <div>
+          <div class="col-header z-h">
+            <span class="col-header-name">ZOMATO</span>
+            <span class="col-count">${zItems.length} items</span>
+          </div>
+          <div class="col-z">
+            ${zItems.map(i => cardHtml(i, 'zomato')).join('') || '<div class="empty-state">No items</div>'}
+          </div>
+        </div>
+        <div>
+          <div class="col-header s-h">
+            <span class="col-header-name">SWIGGY</span>
+            <span class="col-count">${sItems.length} items</span>
+          </div>
+          <div class="col-s">
+            ${sItems.map(i => cardHtml(i, 'swiggy')).join('') || '<div class="empty-state">No items</div>'}
+          </div>
+        </div>
+      </div>
+      ${bestItem ? `
+        <div class="savings-banner">
+          <div class="savings-text">
+            <h3>Best deal right now</h3>
+            <p>${bestItem.name} is ${fmt(savings(bestItem))} cheaper on ${bestPlatform(bestItem) === 'zomato' ? 'Zomato 🔴' : 'Swiggy 🟠'}</p>
+          </div>
+          <div class="savings-amount">Save ${fmt(maxSave)}</div>
+        </div>` : ''}
+    `;
+  } else {
+    const platform = currentTab;
+    const filtered = items.filter(i => i[platform] !== null);
+    if (filtered.length === 0) {
+      main.innerHTML = `<div class="empty-state">No items on ${platform === 'zomato' ? 'Zomato' : 'Swiggy'} for this filter.</div>`;
+      return;
+    }
+    main.innerHTML = `
+      <div class="section-label">${platform === 'zomato' ? 'Zomato' : 'Swiggy'} Menu</div>
+      <div class="list-items">
+        ${filtered.map(i => cardHtml(i, platform)).join('')}
+      </div>
+    `;
+  }
+}
+
+// ── UI CONTROLS ───────────────────────────────────────────────
+function setTab(tab) {
+  currentTab = tab;
+  ['both','zomato','swiggy'].forEach(t => {
+    document.getElementById('tab-' + t).className = 'tab' + (t === tab ? ` active-${tab}` : '');
+  });
+  render();
+}
+
+function onSearch() {
+  currentQuery = document.getElementById('searchInput').value.trim();
+  render();
+}
+
+function toggleSort() {
+  sortSavings = !sortSavings;
+  document.getElementById('sortBtn').classList.toggle('active', sortSavings);
+  render();
+}
+
+function showFatalError(msg) {
+  document.getElementById('heroTitle').textContent = 'Something went wrong';
+  document.getElementById('main').innerHTML = `<div class="empty-state">${msg}</div>`;
+}
+
+// ── INIT ──────────────────────────────────────────────────────
+init();
+</script>
+</body>
+</html>
