@@ -347,14 +347,21 @@
   }
 
   function onDataLoaded() {
-    document.getElementById('loadingState').style.display = 'none';
-    document.getElementById('searchBtn').disabled = false;
+  document.getElementById('loadingState').style.display = 'none';
+  document.getElementById('searchBtn').disabled = false;
 
-    // Build helper text from loaded restaurants
-    const names = restaurants.map(r => `${r.name}`).join(' · ');
-    document.getElementById('helperText').innerHTML =
-      `Available: ${restaurants.map(r => `<span onclick="fillDemo('${r.name}','${r.city}')">${r.name}</span>`).join(', ')}`;
-  }
+  const helperText = document.getElementById('helperText');
+  helperText.innerHTML = 'Available: ' + restaurants.map(r =>
+    `<span class="demo-link" data-id="${r.id}">${r.name}</span>`
+  ).join(', ');
+
+  helperText.querySelectorAll('.demo-link').forEach(el => {
+    el.addEventListener('click', () => {
+      const r = restaurants.find(rest => rest.id === el.dataset.id);
+      if (r) fillDemo(r.name, r.city);
+    });
+  });
+}
 
   // ── AUTOCOMPLETE ───────────────────────────────────────
   function onRestInput() {
@@ -499,12 +506,12 @@
 
   // ── DEMO FILL ─────────────────────────────────────────
   function fillDemo(name, city) {
-    document.getElementById('location').value = city;
-    document.getElementById('restaurant').value = name;
-    selectedRestaurant = restaurants.find(r => r.name === name);
-    clearErr('location');
-    clearErr('restaurant');
-  }
+  document.getElementById('location').value = city;
+  document.getElementById('restaurant').value = name;
+  selectedRestaurant = restaurants.find(r => r.name === name);
+  clearErr('location');
+  clearErr('restaurant');
+}
 
   // ── INIT ──────────────────────────────────────────────
   loadData();
